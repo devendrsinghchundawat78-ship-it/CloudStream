@@ -19,6 +19,7 @@ import com.lagradost.cloudstream3.ui.search.SearchAdapter
 import com.lagradost.cloudstream3.ui.search.SearchResultBuilder
 import com.lagradost.cloudstream3.ui.settings.Globals.EMULATOR
 import com.lagradost.cloudstream3.ui.settings.Globals.PHONE
+import com.lagradost.cloudstream3.ui.settings.Globals.TV
 import com.lagradost.cloudstream3.ui.settings.Globals.updateTv
 import com.lagradost.cloudstream3.ui.settings.SettingsFragment.Companion.getPref
 import com.lagradost.cloudstream3.ui.settings.SettingsFragment.Companion.hideOn
@@ -116,6 +117,27 @@ class SettingsUI : BasePreferenceFragmentCompat() {
                     } catch (e: Exception) {
                         logError(e)
                     }
+                }
+            )
+            return@setOnPreferenceClickListener true
+        }
+
+        getPref(R.string.nav_style_key)?.hideOn(TV or EMULATOR)?.setOnPreferenceClickListener {
+            val prefNames = resources.getStringArray(R.array.nav_style_names)
+            val prefValues = resources.getIntArray(R.array.nav_style_values)
+            val current = settingsManager.getInt(getString(R.string.nav_style_key), 0)
+
+            activity?.showBottomDialog(
+                items = prefNames.toList(),
+                selectedIndex = prefValues.indexOf(current),
+                name = getString(R.string.nav_style_title),
+                showApply = true,
+                dismissCallback = {},
+                callback = { selected ->
+                    settingsManager.edit {
+                        putInt(getString(R.string.nav_style_key), prefValues[selected])
+                    }
+                    (activity as? MainActivity)?.applyNavStyle()
                 }
             )
             return@setOnPreferenceClickListener true

@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
@@ -57,7 +58,11 @@ import com.google.android.gms.cast.framework.SessionManager
 import com.google.android.gms.cast.framework.SessionManagerListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigationrail.NavigationRailView
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.RelativeCornerSize
+import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.common.collect.Comparators.min
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
@@ -219,6 +224,12 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
 
         private const val FILE_DELETE_KEY = "FILES_TO_DELETE_KEY"
         const val API_NAME_EXTRA_KEY = "API_NAME_EXTRA_KEY"
+
+        // Bottom navigation bar styles (iOS style floating bar)
+        const val NAV_STYLE_ADAPTIVE = 0
+        const val NAV_STYLE_EXPANDED = 1
+        const val NAV_STYLE_COMPACT = 2
+        const val NAV_STYLE_CLASSIC = 3
 
         /**
          * Transient files to delete on application exit.
@@ -1775,6 +1786,8 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
             }
         }
 
+        applyNavStyle()
+
         val rail = binding?.navRailView
         if (rail != null) {
             binding?.navRailView?.labelVisibilityMode =
@@ -2061,6 +2074,61 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
 
     override fun onAuthenticationError() {
         finish()
+    }
+
+    /**
+     * Applies the selected bottom navigation bar style.
+     * Purely visual (iOS style floating bar with rounded corners) — the data system
+     * and navigation behavior are not touched at all.
+     */
+    fun applyNavStyle() {
+        val binding = this.binding ?: return
+        val navView = binding.navView ?: return
+        val mode = PreferenceManager.getDefaultSharedPreferences(this)
+            .getInt(getString(R.string.nav_style_key), NAV_STYLE_ADAPTIVE)
+
+        val density = resources.displayMetrics.density
+        val barColor = getResourceColor(R.attr.primaryGrayBackground)
+        val lp = navView.layoutParams as? ViewGroup.MarginLayoutParams ?: return
+
+        when (mode) {
+            NAV_STYLE_CLASSIC -> {
+                // Original full-width, square-cornered bar.
+                lp.setMargins(0, 0, 0, 0)
+                navView.background = ColorDrawable(barColor)
+                navView.elevation = 8f * density
+                navView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_UNLABELED
+            }
+
+            else -> {
+                // Floating iOS style dock.
+                val side = (20f * density).toInt()
+                val bottom = (16f * density).toInt()
+                lp.setMargins(side, 0, side, bottom)
+
+                navView.background = MaterialShapeDrawable(
+                    ShapeAppearanceModel.builder()
+                        .setAllCornerSizes(30f * density)
+                        .build()
+                ).apply {
+                    fillColor = ColorStateList.valueOf(barColor)
+                }
+                navView.elevation = 12f * density
+
+                navView.labelVisibilityMode = when (mode) {
+                    NAV_STYLE_EXPANDED -> NavigationBarView.LABEL_VISIBILITY_LABELED
+                    NAV_STYLE_COMPACT -> NavigationBarView.LABEL_VISIBILITY_UNLABELED
+                    else -> NavigationBarView.LABEL_VISIBILITY_SELECTED // Adaptive
+                }
+            }
+        }
+
+        // iOS-like pill shaped active indicator (animated by Material automatically).
+        navView.itemShapeAppearance = ShapeAppearanceModel.builder()
+            .setAllCornerSizes(RelativeCornerSize(0.5f))
+            .build()
+
+        navView.requestLayout()
     }
 
     suspend fun checkGithubConnectivity(): Boolean {

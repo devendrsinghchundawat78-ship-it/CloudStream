@@ -229,6 +229,20 @@
         <item>2</item>
     </array>
 
+    <array name="nav_style_names">
+        <item>@string/nav_style_adaptive</item>
+        <item>@string/nav_style_expanded</item>
+        <item>@string/nav_style_compact</item>
+        <item>@string/nav_style_classic</item>
+    </array>
+
+    <array name="nav_style_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </array>
+
     <array name="software_decoding_switch">
         <item>@string/automatic</item>
         <item>HW+SW</item>

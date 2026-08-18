@@ -15,6 +15,11 @@
             android:icon="@drawable/ic_baseline_tv_24"
             android:key="@string/app_layout_key"
             android:title="@string/app_layout" />
+        <Preference
+            android:icon="@drawable/ic_dashboard_black_24dp"
+            android:key="@string/nav_style_key"
+            android:summary="@string/nav_style_summary"
+            android:title="@string/nav_style_title" />
         <SwitchPreference
             android:defaultValue="true"
             android:icon="@drawable/title_24px"

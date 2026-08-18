@@ -380,6 +380,12 @@
     <string name="random_button_settings_desc">Show random button on Homepage and Library</string>
     <string name="provider_lang_settings">Extension languages</string>
     <string name="app_layout">App Layout</string>
+    <string name="nav_style_title">Bottom bar style</string>
+    <string name="nav_style_summary">Change how the bottom navigation bar looks</string>
+    <string name="nav_style_adaptive">Adaptive</string>
+    <string name="nav_style_expanded">Always Expanded</string>
+    <string name="nav_style_compact">Always Compact</string>
+    <string name="nav_style_classic">Classic</string>
     <string name="preferred_media_settings">Preferred media</string>
     <string name="enable_nsfw_on_providers">Enable NSFW on supported Extensions</string>
     <string name="subtitles_encoding">Subtitle encoding</string>
