@@ -61,7 +61,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigationrail.NavigationRailView
 import com.google.android.material.shape.MaterialShapeDrawable
-import com.google.android.material.shape.RelativeCornerSize
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.common.collect.Comparators.min
@@ -2123,11 +2122,8 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
             }
         }
 
-        // iOS-like pill shaped active indicator (animated by Material automatically).
-        navView.itemShapeAppearance = ShapeAppearanceModel.builder()
-            .setAllCornerSizes(RelativeCornerSize(0.5f))
-            .build()
-
+        // Note: Material 3's default active indicator is already pill shaped,
+        // so no extra shape appearance is needed here.
         navView.requestLayout()
     }
 
