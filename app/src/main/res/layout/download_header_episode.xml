@@ -12,7 +12,8 @@
     android:focusable="true"
     android:nextFocusRight="@id/download_button"
     app:cardBackgroundColor="?attr/boxItemBackground"
-    app:cardCornerRadius="@dimen/rounded_image_radius">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp">
 
 <!--    <androidx.core.widget.ContentLoadingProgressBar-->
 <!--        android:id="@+id/download_header_episode_progress"-->

@@ -19,7 +19,7 @@
     <string name="new_update_format" formatted="true">Nalezena nová aktualizace! \n%1$s -&gt; %2$s</string>
     <string name="filler" formatted="true">Výplň</string>
     <string name="duration_format" formatted="true">%d min</string>
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">NETMAX</string>
     <string name="title_home">Domů</string>
     <string name="title_search">Hledat</string>
     <string name="title_downloads">Stahování</string>
@@ -349,7 +349,7 @@
     <string name="action_mark_as_watched">Označit jako zhlédnuté</string>
     <string name="history">Historie</string>
     <string name="next_episode_time_min_format" formatted="true">%dm</string>
-    <string name="play_with_app_name">Přehrát s CloudStream</string>
+    <string name="play_with_app_name">Přehrát s NETMAX</string>
     <string name="autoplay_next_settings_des">Přehrát další epizodu po skončení aktuální</string>
     <string name="show_trailers_settings">Zobrazit trailery</string>
     <string name="pref_filter_search_quality">Skrýt vybranou kvalitu videa ve výsledcích vyhledávání</string>

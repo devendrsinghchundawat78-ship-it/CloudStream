@@ -49,6 +49,8 @@ const val ACTION_CHROME_CAST_MIRROR = 5
 
 const val ACTION_DOWNLOAD_EPISODE = 6
 const val ACTION_DOWNLOAD_MIRROR = 7
+/** Opens the bottom-sheet source picker before downloading. */
+const val ACTION_DOWNLOAD_EPISODE_PICK = 20
 
 const val ACTION_RELOAD_EPISODE = 8
 
@@ -175,7 +177,7 @@ class EpisodeAdapter(
                                 clickCallback.invoke(
                                     EpisodeClickEvent(
                                         position,
-                                        ACTION_DOWNLOAD_EPISODE,
+                                        ACTION_DOWNLOAD_EPISODE_PICK,
                                         item
                                     )
                                 )
@@ -396,7 +398,7 @@ class EpisodeAdapter(
                                 clickCallback.invoke(
                                     EpisodeClickEvent(
                                         position,
-                                        ACTION_DOWNLOAD_EPISODE,
+                                        ACTION_DOWNLOAD_EPISODE_PICK,
                                         item
                                     )
                                 )

@@ -1,12 +1,16 @@
 package com.lagradost.cloudstream3.ui.home
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.graphics.ColorUtils
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
@@ -58,6 +62,8 @@ import com.lagradost.cloudstream3.utils.SingleSelectionHelper.showBottomDialog
 import com.lagradost.cloudstream3.utils.SingleSelectionHelper.showOptionSelectStringRes
 import com.lagradost.cloudstream3.utils.UIHelper.fixPaddingStatusbarMargin
 import com.lagradost.cloudstream3.utils.UIHelper.fixPaddingStatusbarView
+import com.lagradost.cloudstream3.utils.UIHelper.getResourceColor
+import com.lagradost.cloudstream3.utils.UIHelper.getStatusBarHeight
 import com.lagradost.cloudstream3.utils.UIHelper.populateChips
 import androidx.core.graphics.toColorInt
 import com.lagradost.cloudstream3.ui.setRecycledViewPool
@@ -337,6 +343,70 @@ class HomeParentItemAdapterPreview(
 
         private val homeNonePadding: View = itemView.findViewById(R.id.home_none_padding)
 
+        // ---- Category tabs (Recommend / Movies / TV Shows / 18+) ----
+        // These views only exist in the phone header, so everything is nullable.
+        private val tabViews: List<Pair<HomeTab, View?>> = listOf(
+            HomeTab.RECOMMEND to itemView.findViewById(R.id.home_tab_recommend),
+            HomeTab.MOVIES to itemView.findViewById(R.id.home_tab_movies),
+            HomeTab.TV to itemView.findViewById(R.id.home_tab_tv),
+            HomeTab.NSFW to itemView.findViewById(R.id.home_tab_nsfw),
+        )
+
+        private val tabTextViews: Map<HomeTab, TextView?> = mapOf(
+            HomeTab.RECOMMEND to itemView.findViewById(R.id.home_tab_recommend_text),
+            HomeTab.MOVIES to itemView.findViewById(R.id.home_tab_movies_text),
+            HomeTab.TV to itemView.findViewById(R.id.home_tab_tv_text),
+            HomeTab.NSFW to itemView.findViewById(R.id.home_tab_nsfw_text),
+        )
+
+        private val tabIndicators: Map<HomeTab, View?> = mapOf(
+            HomeTab.RECOMMEND to itemView.findViewById(R.id.home_tab_recommend_indicator),
+            HomeTab.MOVIES to itemView.findViewById(R.id.home_tab_movies_indicator),
+            HomeTab.TV to itemView.findViewById(R.id.home_tab_tv_indicator),
+            HomeTab.NSFW to itemView.findViewById(R.id.home_tab_nsfw_indicator),
+        )
+
+        private fun renderTabs(active: HomeTab) {
+            val accent = itemView.context.getResourceColor(R.attr.colorPrimary)
+            val inactive = itemView.context.getResourceColor(R.attr.white)
+            HomeTab.entries.forEach { tab ->
+                val isActive = tab == active
+                tabTextViews[tab]?.setTextColor(if (isActive) accent else inactive)
+                tabIndicators[tab]?.isVisible = isActive
+            }
+        }
+
+        // ---- Hero pagination dots (phone only) ----
+        private val dotsHolder: LinearLayout? = itemView.findViewById(R.id.home_preview_dots)
+
+        private fun renderDots(count: Int, activeIndex: Int) {
+            val holder = dotsHolder ?: return
+            holder.removeAllViews()
+            if (count <= 1) {
+                holder.isVisible = false
+                return
+            }
+            holder.isVisible = true
+            val density = itemView.context.resources.displayMetrics.density
+            val size = (7 * density).toInt()
+            val margin = (4 * density).toInt()
+            val accent = itemView.context.getResourceColor(R.attr.colorPrimary)
+            val inactive = ColorUtils.setAlphaComponent(
+                itemView.context.getResourceColor(R.attr.white),
+                0x66
+            )
+            for (i in 0 until count) {
+                val dot = View(itemView.context)
+                val lp = LinearLayout.LayoutParams(size, size)
+                lp.setMargins(margin, 0, margin, 0)
+                dot.layoutParams = lp
+                dot.background = ContextCompat.getDrawable(itemView.context, R.drawable.home_dot)
+                dot.backgroundTintList =
+                    ColorStateList.valueOf(if (i == activeIndex) accent else inactive)
+                holder.addView(dot)
+            }
+        }
+
         fun onSelect(item: LoadResponse, position: Int) {
             (binding as? FragmentHomeHeadTvBinding)?.apply {
                 homePreviewDescription.isGone = item.plot.isNullOrBlank()
@@ -486,6 +556,7 @@ class HomeParentItemAdapterPreview(
                         }
                     }
                     val item = previewAdapter.getItemOrNull(position) ?: return
+                    renderDots(previewAdapter.itemCount, position)
                     onSelect(item, position)
                 }
             }
@@ -508,6 +579,35 @@ class HomeParentItemAdapterPreview(
 
         init {
             previewViewpager.setPageTransformer(HomeScrollTransformer())
+
+            // Category tabs: select filter + keep the indicator in sync.
+            tabViews.forEach { (tab, view) ->
+                view?.setOnClickListener {
+                    viewModel.selectTab(tab)
+                }
+            }
+            itemView.observe(viewModel.homeTab) { tab ->
+                renderTabs(tab)
+            }
+            renderTabs(viewModel.homeTab.value ?: HomeTab.RECOMMEND)
+
+            // The search row is pushed down by the status bar height at runtime
+            // (fixPaddingStatusbarMargin above), so keep the tabs + hero aligned with it.
+            val statusBar = itemView.context.getStatusBarHeight()
+            if (statusBar > 0) {
+                itemView.findViewById<View>(R.id.home_tabs_scroll)
+                    ?.let { scroll ->
+                        scroll.layoutParams = (scroll.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                            topMargin += statusBar
+                        }
+                    }
+                itemView.findViewById<View>(R.id.home_preview_card)
+                    ?.let { card ->
+                        card.layoutParams = (card.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                            topMargin += statusBar
+                        }
+                    }
+            }
 
             previewViewpager.adapter = previewAdapter
             resumeRecyclerView.adapter = resumeAdapter
@@ -691,6 +791,7 @@ class HomeParentItemAdapterPreview(
                     if (item != null) {
                         onSelect(item, currentPos)
                     }
+                    renderDots(preview.value.second.size, currentPos)
                 }
 
                 else -> {

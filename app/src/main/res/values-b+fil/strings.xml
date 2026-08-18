@@ -71,7 +71,7 @@
     <string name="rated_format" formatted="true">Na-rate: %.1f</string>
     <string name="new_update_format" formatted="true">May nakitang bagong update!\n%1$s -&gt; %2$s</string>
     <string name="duration_format" formatted="true">%d min</string>
-    <string name="play_with_app_name">Ipatugtog sa CloudStream</string>
+    <string name="play_with_app_name">Ipatugtog sa NETMAX</string>
     <string name="title_home">Bahay</string>
     <string name="title_search">Maghanap</string>
     <string name="title_downloads">Mga Download</string>

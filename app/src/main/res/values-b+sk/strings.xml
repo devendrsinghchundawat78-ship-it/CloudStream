@@ -11,7 +11,7 @@
     <string name="result_open_in_browser">Otvoriť v prehliadači</string>
     <string name="skip_loading">Preskočiť načítavanie</string>
     <string name="cast_format" formatted="true">Hrajú: %s</string>
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">NETMAX</string>
     <string name="result_poster_img_des">Plagát</string>
     <string name="next_episode_time_day_format" formatted="true">%1$dd %2$dh %3$dm</string>
     <string name="next_episode_time_min_format" formatted="true">%dm</string>
@@ -19,7 +19,7 @@
     <string name="search_poster_img_des">Plagát</string>
     <string name="episode_poster_img_des">Plagát epizódy</string>
     <string name="home_main_poster_img_des">Hlavný plagát</string>
-    <string name="play_with_app_name">Prehrať s CloudStream</string>
+    <string name="play_with_app_name">Prehrať s NETMAX</string>
     <string name="title_settings">Nastavenia</string>
     <string name="search_hint_site" formatted="true">Hľadať %s…</string>
     <string name="popup_resume_download">Pokračovať v sťahovaní</string>

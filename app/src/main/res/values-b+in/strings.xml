@@ -18,7 +18,7 @@
     <string name="new_update_format" formatted="true">Pembaruan ditemukan!\n%1$s -&gt; %2$s</string>
     <string name="filler" formatted="true">Filler</string>
     <string name="duration_format" formatted="true">%d mnt</string>
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">NETMAX</string>
     <string name="title_home">Beranda</string>
     <string name="title_search">Cari</string>
     <string name="title_downloads">Unduhan</string>
@@ -372,7 +372,7 @@
     <string name="pref_category_app_updates">Perbarui aplikasi</string>
     <string name="pref_category_backup">Cadangkan</string>
     <string name="pref_category_extensions">Ekstensi</string>
-    <string name="play_with_app_name">Putar di CloudStream</string>
+    <string name="play_with_app_name">Putar di NETMAX</string>
     <string name="pref_filter_search_quality">Sembunyikan kualitas video terpilih di pencarian</string>
     <string name="season_format">%1$s %2$d%3$s</string>
     <string name="livestreams">Siaran langsung</string>

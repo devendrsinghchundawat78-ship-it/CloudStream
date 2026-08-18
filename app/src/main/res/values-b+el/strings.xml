@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">NETMAX</string>
     <string name="title_home">Αρχική</string>
     <string name="title_search">Αναζήτηση</string>
     <string name="title_downloads">Λήψεις</string>
     <string name="title_settings">Ρυθμίσεις</string>
-    <string name="play_with_app_name">Άνοιγμα με CloudStream</string>
+    <string name="play_with_app_name">Άνοιγμα με NETMAX</string>
     <string name="search_hint">Αναζήτηση…</string>
     <string name="search_poster_img_des">Αφίσα</string>
     <string name="no_data">Χωρίς δεδομένα</string>

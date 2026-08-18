@@ -20,8 +20,8 @@
     <string name="rated_format" formatted="true">Classificado: %.1f</string>
     <string name="new_update_format" formatted="true">Nova atualização encontrada! \n%1$s -&gt; %2$s</string>
     <string name="filler" formatted="true">Preenchimento</string>
-    <string name="app_name">CloudStream</string>
-    <string name="play_with_app_name">Assistir com o CloudStream</string>
+    <string name="app_name">NETMAX</string>
+    <string name="play_with_app_name">Assistir com o NETMAX</string>
     <string name="title_home">Início</string>
     <string name="title_search">Pesquisar</string>
     <string name="title_downloads">Downloads</string>

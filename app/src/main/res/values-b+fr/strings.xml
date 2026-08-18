@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">NETMAX</string>
     <string name="title_home">Accueil</string>
     <string name="title_search">Rechercher</string>
     <string name="title_downloads">Téléchargements</string>
@@ -291,7 +291,7 @@
     <string name="discord">Rejoignez le Discord</string>
     <string name="next_episode_time_hour_format" formatted="true">%1$d h %2$d min</string>
     <string name="next_episode_time_min_format" formatted="true">%d min</string>
-    <string name="play_with_app_name">Lire avec CloudStream</string>
+    <string name="play_with_app_name">Lire avec NETMAX</string>
     <string name="play_livestream_button">Lire en direct</string>
     <string name="skip_type_ed">Fin</string>
     <string name="history">Historique</string>

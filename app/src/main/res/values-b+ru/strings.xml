@@ -36,10 +36,10 @@
     <string name="rated_format" formatted="true">Оценили: %.1f</string>
     <string name="new_update_format" formatted="true">Новое обновление найдено! \n%1$s -&gt; %2$s</string>
     <string name="filler" formatted="true">Заполнитель</string>
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">NETMAX</string>
     <string name="action_remove_from_bookmarks">Убрать</string>
     <string name="app_dub_sub_episode_text_format" formatted="true">%1$s Ep %2$d</string>
-    <string name="play_with_app_name">Смотреть с CloudStream</string>
+    <string name="play_with_app_name">Смотреть с NETMAX</string>
     <string name="title_home">Главная</string>
     <string name="title_search">Поиск</string>
     <string name="title_downloads">Скачанное</string>

@@ -18,13 +18,24 @@
         android:layout_width="match_parent"
         android:layout_height="500dp">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/home_preview_viewpager"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/home_preview_card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="92dp"
+            android:layout_marginEnd="12dp"
+            app:cardBackgroundColor="@color/transparent"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="false">
 
-        </androidx.viewpager2.widget.ViewPager2>
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/home_preview_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" />
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:id="@+id/home_padding"
@@ -38,14 +49,18 @@
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/home_search"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
+                android:background="@drawable/home_search_bg"
+                android:elevation="0dp"
                 android:editTextColor="@color/white"
                 android:gravity="center_vertical"
                 android:iconifiedByDefault="true"
                 android:nextFocusRight="@id/home_head_profile_padding"
-                android:padding="0dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 app:closeIcon="@drawable/ic_baseline_close_24"
@@ -86,6 +101,157 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
         </LinearLayout>
+
+        <HorizontalScrollView
+            android:id="@+id/home_tabs_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:clipToPadding="false"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/home_tabs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <LinearLayout
+                    android:id="@+id/home_tab_recommend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingStart="14dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:id="@+id/home_tab_recommend_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_tab_recommend"
+                        android:textColor="?attr/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:id="@+id/home_tab_recommend_indicator"
+                        android:layout_width="18dp"
+                        android:layout_height="3dp"
+                        android:layout_marginTop="4dp"
+                        android:background="?attr/colorPrimary" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/home_tab_movies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingStart="14dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:id="@+id/home_tab_movies_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_tab_movies"
+                        android:textColor="?attr/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:id="@+id/home_tab_movies_indicator"
+                        android:layout_width="18dp"
+                        android:layout_height="3dp"
+                        android:layout_marginTop="4dp"
+                        android:background="?attr/colorPrimary" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/home_tab_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingStart="14dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:id="@+id/home_tab_tv_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_tab_tv"
+                        android:textColor="?attr/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:id="@+id/home_tab_tv_indicator"
+                        android:layout_width="18dp"
+                        android:layout_height="3dp"
+                        android:layout_marginTop="4dp"
+                        android:background="?attr/colorPrimary" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/home_tab_nsfw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingStart="14dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:id="@+id/home_tab_nsfw_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_tab_nsfw"
+                        android:textColor="?attr/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:id="@+id/home_tab_nsfw_indicator"
+                        android:layout_width="18dp"
+                        android:layout_height="3dp"
+                        android:layout_marginTop="4dp"
+                        android:background="?attr/colorPrimary" />
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:id="@+id/home_preview_dots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="104dp"
+            android:gravity="center"
+            android:orientation="horizontal" />
 
         <!--
                         <TextView

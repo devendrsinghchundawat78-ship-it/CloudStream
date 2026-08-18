@@ -74,14 +74,14 @@
     <string name="error_bookmarks_text">Penanda halaman</string>
     <string name="home_play">Pasang</string>
     <string name="torrent_no_plot">Tiada penerangan dijumpai</string>
-    <string name="play_with_app_name">Pasang dengan CloudStream</string>
+    <string name="play_with_app_name">Pasang dengan NETMAX</string>
     <string name="title_home">Halaman Utama</string>
     <string name="play_movie_button">Pasang Wayang</string>
     <string name="update_started">Kemas kini bermula</string>
     <string name="subs_font">Teks</string>
     <string name="chromecast_subtitles_settings_des">Tetapan Sari kata Chromecast</string>
     <string name="play_episode">Pasang Episod</string>
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">NETMAX</string>
     <string name="type_completed">Selesai</string>
     <string name="search_provider_text_types">Carian mengikut jenis</string>
     <string name="title_search">Carian</string>

@@ -23,7 +23,7 @@
     <string name="new_update_format" formatted="true">Nova atualização encontrada! \n%1$s → %2$s</string>
     <string name="filler" formatted="true">Preenchimento</string>
     <string name="duration_format" formatted="true">%d min</string>
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">NETMAX</string>
     <string name="title_home">Início</string>
     <string name="title_search">Pesquisar</string>
     <string name="title_downloads">Downloads</string>
@@ -411,7 +411,7 @@
     <string name="update_notification_downloading">Baixando atualização do aplicativo…</string>
     <string name="referer">Referenciador (opcional)</string>
     <string name="pref_category_app_updates">Atualizações do App</string>
-    <string name="play_with_app_name">Assistir com o CloudStream</string>
+    <string name="play_with_app_name">Assistir com o NETMAX</string>
     <string name="automatic_plugin_download_summary">Automaticamente instale todos os plugins não instalados dos repositórios adicionados.</string>
     <string name="play_trailer_button">Reproduzir trailer</string>
     <string name="browser">Navegador</string>

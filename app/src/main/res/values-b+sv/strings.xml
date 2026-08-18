@@ -3,7 +3,7 @@
     <string name="rated_format">Betygsatt: %.1f</string>
     <string name="player_speed_text_format">Hastighet (%.2fx)</string>
     <string name="new_update_format">Ny uppdatering hittad! \n%1$s -&gt; %2$s</string>
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">NETMAX</string>
     <string name="title_home">Hem</string>
     <string name="title_search">Sök</string>
     <string name="title_downloads">Nerladdningar</string>
@@ -202,7 +202,7 @@
     <string name="app_dub_sub_episode_text_format">%1$s A%2$d</string>
     <string name="next_episode_time_hour_format" formatted="true">%1$dh %2$dm</string>
     <string name="next_episode_time_min_format" formatted="true">%dm</string>
-    <string name="play_with_app_name">Spela med CloudStream</string>
+    <string name="play_with_app_name">Spela med NETMAX</string>
     <string name="chromecast_subtitles_settings">Chromecast-undertexter</string>
     <string name="double_tap_to_pause_settings_des">Dubbeltryck i mitten för att pausa</string>
     <string name="restore_settings">Återställ data från backup</string>

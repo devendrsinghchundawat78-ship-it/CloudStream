@@ -16,6 +16,7 @@ import com.lagradost.cloudstream3.LoadResponse
 import com.lagradost.cloudstream3.MainAPI
 import com.lagradost.cloudstream3.MainActivity
 import com.lagradost.cloudstream3.SearchResponse
+import com.lagradost.cloudstream3.TvType
 import com.lagradost.cloudstream3.amap
 import com.lagradost.cloudstream3.mvvm.Resource
 import com.lagradost.cloudstream3.mvvm.debugAssert
@@ -56,6 +57,29 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import java.util.EnumSet
 import java.util.concurrent.CopyOnWriteArrayList
+
+/**
+ * Category tabs shown on the redesigned Home screen.
+ * [types] == null means "show everything" (Recommend).
+ * Filtering is purely client-side on top of already loaded data —
+ * it never touches API/data fetching.
+ */
+enum class HomeTab(val stringRes: Int, val types: Set<TvType>?) {
+    RECOMMEND(R.string.home_tab_recommend, null),
+    MOVIES(R.string.home_tab_movies, setOf(TvType.Movie, TvType.AnimeMovie)),
+    TV(
+        R.string.home_tab_tv,
+        setOf(
+            TvType.TvSeries,
+            TvType.Anime,
+            TvType.OVA,
+            TvType.AsianDrama,
+            TvType.Cartoon,
+            TvType.Documentary
+        )
+    ),
+    NSFW(R.string.home_tab_nsfw, setOf(TvType.NSFW)),
+}
 
 class HomeViewModel : ViewModel() {
     companion object {
@@ -268,7 +292,7 @@ class HomeViewModel : ViewModel() {
                     current.hasNext = false
                 }
             }
-            _page.postValue(Resource.Success(expandable))
+            postFiltered()
         }
 
         lock -= name
@@ -309,10 +333,57 @@ class HomeViewModel : ViewModel() {
     }
 
     private var addJob: Job? = null
+
+    // ---- Category tab filter (client-side only, no data changes) ----
+    private var currentTab = HomeTab.RECOMMEND
+    private val _homeTab = MutableLiveData(HomeTab.RECOMMEND)
+    val homeTab: LiveData<HomeTab> = _homeTab
+
+    fun selectTab(tab: HomeTab) {
+        if (currentTab == tab) return
+        currentTab = tab
+        _homeTab.postValue(tab)
+        postFiltered()
+    }
+
+    private fun filterSections(): Map<String, ExpandableHomepageList> {
+        val types = currentTab.types ?: return expandable
+        val out = linkedMapOf<String, ExpandableHomepageList>()
+        for ((name, sec) in expandable) {
+            val filtered = sec.list.list.filter { it.type != null && types.contains(it.type) }
+            if (filtered.isNotEmpty()) {
+                out[name] = sec.copy(
+                    list = sec.list.copy(list = CopyOnWriteArrayList(filtered))
+                )
+            }
+        }
+        return out
+    }
+
+    private fun postPreviewFiltered() {
+        if (previewResponses.isEmpty()) {
+            _preview.postValue(Resource.Failure(false, "No homepage responses"))
+            return
+        }
+        val types = currentTab.types
+        val preview = if (types == null) previewResponses.toList()
+        else previewResponses.filter { types.contains(it.type) }
+        _preview.postValue(
+            Resource.Success(
+                (previewResponsesAdded.size < currentShuffledList.size) to preview
+            )
+        )
+    }
+
+    private fun postFiltered() {
+        _page.postValue(Resource.Success(filterSections()))
+        postPreviewFiltered()
+    }
+
     fun loadMoreHomeScrollResponses() {
         addJob = ioSafe {
             updatePreviewResponses(previewResponses, previewResponsesAdded, currentShuffledList, 1)
-            _preview.postValue(Resource.Success((previewResponsesAdded.size < currentShuffledList.size) to previewResponses))
+            postPreviewFiltered()
         }
     }
 
@@ -393,10 +464,8 @@ class HomeViewModel : ViewModel() {
                                 "No homepage responses"
                             )
                         )
-                    } else {
-                        _preview.postValue(Resource.Success((previewResponsesAdded.size < currentShuffledList.size) to previewResponses))
                     }
-                    _page.postValue(Resource.Success(expandable))
+                    postFiltered()
                 } catch (e: Exception) {
                     _randomItems.postValue(emptyList())
                     logError(e)

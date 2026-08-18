@@ -534,7 +534,7 @@ open class ResultFragmentPhone : BaseFragment<FragmentResultSwipeBinding>(
                     api?.hasDownloadSupport == true,
                     { episodeClick ->
                         when (episodeClick.action) {
-                            ACTION_DOWNLOAD_EPISODE, ACTION_DOWNLOAD_MIRROR -> {
+                            ACTION_DOWNLOAD_EPISODE, ACTION_DOWNLOAD_EPISODE_PICK, ACTION_DOWNLOAD_MIRROR -> {
                                 requirePathForActions(listOf(episodeClick.action to episodeClick.data))
                             }
 
@@ -913,7 +913,7 @@ open class ResultFragmentPhone : BaseFragment<FragmentResultSwipeBinding>(
 
                         when (click.action) {
                             DOWNLOAD_ACTION_DOWNLOAD -> {
-                                requirePathForActions(listOf(ACTION_DOWNLOAD_EPISODE to ep))
+                                requirePathForActions(listOf(ACTION_DOWNLOAD_EPISODE_PICK to ep))
                             }
 
                             DOWNLOAD_ACTION_LONG_CLICK -> {

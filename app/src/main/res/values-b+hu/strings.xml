@@ -13,7 +13,7 @@
     <string name="new_update_format" formatted="true">Új frissítés található! \n%1$s -&gt; %2$s</string>
     <string name="duration_format" formatted="true">%d perc</string>
     <string name="app_dub_sub_episode_text_format" formatted="true">%1$sEp%2$d</string>
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">NETMAX</string>
     <string name="preview_background_img_des">Háttér Előnézet</string>
     <string name="download_failed">Letöltés sikertelen</string>
     <string name="download">Letöltés</string>
@@ -42,7 +42,7 @@
     <string name="normal_no_plot">Nem található cselekmény</string>
     <string name="continue_watching">Lejátszás folytatása</string>
     <string name="filler" formatted="true">Filler</string>
-    <string name="play_with_app_name">Lejátszás CloudStreamel</string>
+    <string name="play_with_app_name">Lejátszás NETMAXel</string>
     <string name="title_home">Kezdőlap</string>
     <string name="title_search">Keresés</string>
     <string name="title_downloads">Letöltések</string>

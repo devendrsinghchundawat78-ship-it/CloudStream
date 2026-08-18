@@ -75,7 +75,6 @@ import com.lagradost.cloudstream3.ui.player.GeneratorPlayer
 import com.lagradost.cloudstream3.ui.player.LOADTYPE_ALL
 import com.lagradost.cloudstream3.ui.player.LOADTYPE_CHROMECAST
 import com.lagradost.cloudstream3.ui.player.LOADTYPE_INAPP
-import com.lagradost.cloudstream3.ui.player.LOADTYPE_INAPP_DOWNLOAD
 import com.lagradost.cloudstream3.ui.player.RepoLinkGenerator
 import com.lagradost.cloudstream3.ui.player.SubtitleData
 import com.lagradost.cloudstream3.ui.result.EpisodeAdapter.Companion.getPlayerAction
@@ -130,6 +129,7 @@ import com.lagradost.cloudstream3.utils.Qualities
 import com.lagradost.cloudstream3.utils.UIHelper.navigate
 import com.lagradost.cloudstream3.utils.UiText
 import com.lagradost.cloudstream3.utils.VIDEO_WATCH_STATE
+import com.lagradost.cloudstream3.ui.download.DownloadSourcePicker
 import com.lagradost.cloudstream3.utils.downloader.DownloadFileManagement.sanitizeFilename
 import com.lagradost.cloudstream3.utils.downloader.DownloadObjects
 import com.lagradost.cloudstream3.utils.downloader.DownloadQueueManager
@@ -1485,13 +1485,10 @@ class ResultViewModel2 : ViewModel() {
                 )
             }
 
-            ACTION_DOWNLOAD_MIRROR -> {
+            ACTION_DOWNLOAD_EPISODE_PICK, ACTION_DOWNLOAD_MIRROR -> {
                 val response = currentResponse ?: return
-                acquireSingleLink(
-                    click.data,
-                    LOADTYPE_INAPP_DOWNLOAD,
-                    txt(R.string.episode_action_download_mirror)
-                ) { (result, index) ->
+                val act = activity ?: return
+                DownloadSourcePicker(act, click.data) { link, subs ->
                     DownloadQueueManager.addToQueue(
                         DownloadObjects.DownloadQueueItem(
                             click.data,
@@ -1502,15 +1499,15 @@ class ResultViewModel2 : ViewModel() {
                             response.apiName,
                             response.getId(),
                             response.url,
-                            listOf(result.links[index]),
-                            result.subs,
+                            listOf(link),
+                            subs,
                         ).toWrapper()
                     )
                     showToast(
                         R.string.download_started,
                         Toast.LENGTH_SHORT
                     )
-                }
+                }.show()
             }
 
             ACTION_RELOAD_EPISODE -> {

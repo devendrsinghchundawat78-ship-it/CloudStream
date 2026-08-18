@@ -109,7 +109,7 @@
     <string name="home_next_random_img_des">அடுத்து ஏதாவது</string>
     <string name="browser">உலாவி</string>
     <string name="duration_format" formatted="true">%d நிமி</string>
-    <string name="play_with_app_name">CloudStream-உடன் இயக்கு</string>
+    <string name="play_with_app_name">NETMAX-உடன் இயக்கு</string>
     <string name="new_update_format" formatted="true">புதிய புதுப்பிப்பு உள்ளது\n%1$s-&gt;%2$s</string>
     <string name="filler" formatted="true">நிரப்பி</string>
     <string name="search_poster_img_des">போச்டர்</string>
@@ -133,7 +133,7 @@
     <string name="category_account">கணக்குகள் மற்றும் பாதுகாப்பு</string>
     <string name="hls_playlist">எச்.எல்.எச் பிளேலிச்ட்</string>
     <string name="skip_type_mixed_ed">கலப்பு முடிவு</string>
-    <string name="app_name">கிளவுட்ச்ட்ரீம்</string>
+    <string name="app_name">NETMAX</string>
     <string name="benene_count_text_none">பெனின்கள் எதுவும் கொடுக்கப்படவில்லை</string>
     <string name="eigengraumode_settings">பிளேபேக் விரைவு</string>
     <string name="swipe_to_seek_settings">தேட ச்வைப்</string>

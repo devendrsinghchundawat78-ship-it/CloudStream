@@ -107,8 +107,8 @@
     <string name="cast_format" formatted="true">Reparto: %s</string>
     <string name="filler" formatted="true">Relleno</string>
     <string name="duration_format" formatted="true">%d min</string>
-    <string name="app_name">CloudStream</string>
-    <string name="play_with_app_name">Reproducir con Cloudstream</string>
+    <string name="app_name">NETMAX</string>
+    <string name="play_with_app_name">Reproducir con NETMAX</string>
     <string name="title_home">Inicio</string>
     <string name="title_search">Buscar</string>
     <string name="title_downloads">Descargas</string>

@@ -13,7 +13,7 @@
     <string name="go_back_img_des">Wstecz</string>
     <string name="home_change_provider_img_des">Zmień źródło</string>
     <string name="preview_background_img_des">Pogląd tła</string>
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">NETMAX</string>
     <string name="title_home">Główna</string>
     <string name="title_search">Szukaj</string>
     <string name="title_downloads">Pobrane</string>
@@ -413,7 +413,7 @@
     <string name="history">Historia</string>
     <string name="clipboard_too_large">Za dużo tekstu. Nie można skopiować do schowka.</string>
     <string name="network_adress_example">https://example.com/example.mp4</string>
-    <string name="play_with_app_name">Odtwórz w CloudStream</string>
+    <string name="play_with_app_name">Odtwórz w NETMAX</string>
     <string name="skip_type_format" formatted="true">Pomiń %s</string>
     <string name="next_episode_time_hour_format" formatted="true">%1$dh %2$dm</string>
     <string name="yes">Tak</string>

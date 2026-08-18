@@ -9,7 +9,6 @@ import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Rect
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
@@ -58,10 +57,7 @@ import com.google.android.gms.cast.framework.SessionManager
 import com.google.android.gms.cast.framework.SessionManagerListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigationrail.NavigationRailView
-import com.google.android.material.shape.MaterialShapeDrawable
-import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.common.collect.Comparators.min
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
@@ -105,6 +101,7 @@ import com.lagradost.cloudstream3.syncproviders.AccountManager.Companion.APP_STR
 import com.lagradost.cloudstream3.syncproviders.AccountManager.Companion.localListApi
 import com.lagradost.cloudstream3.syncproviders.SyncAPI
 import com.lagradost.cloudstream3.ui.APIRepository
+import com.lagradost.cloudstream3.ui.GlassNavBar
 import com.lagradost.cloudstream3.ui.SyncWatchType
 import com.lagradost.cloudstream3.ui.WatchType
 import com.lagradost.cloudstream3.ui.account.AccountHelper.showAccountSelectLinear
@@ -190,6 +187,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.io.File
 import java.lang.ref.WeakReference
+import java.util.WeakHashMap
 import java.net.URI
 import java.net.URLDecoder
 import java.nio.charset.Charset
@@ -651,6 +649,7 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
         super.onResume()
         afterPluginsLoadedEvent += ::onAllPluginsLoaded
         setActivityInstance(this)
+        binding?.navHostFragment?.postDelayed({ attachGlassScrollListeners() }, 250)
         try {
             if (isCastApiAvailable()) {
                 mSessionManager?.addSessionManagerListener(mSessionManagerListener)
@@ -915,6 +914,9 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
     }
 
     var binding: ActivityMainBinding? = null
+
+    private var glassNavBar: GlassNavBar? = null
+    private val navScrollAttached = WeakHashMap<RecyclerView, Boolean>()
 
     object TvFocus {
         data class FocusTarget(
@@ -1681,6 +1683,8 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
         navController.addOnDestinationChangedListener { _: NavController, navDestination: NavDestination, bundle: Bundle? ->
             // Intercept search and add a query
             updateNavBar(navDestination)
+            // (Re)attach the glass nav-bar scroll listeners for the new screen.
+            binding?.navHostFragment?.postDelayed({ attachGlassScrollListeners() }, 250)
             if (navDestination.matchDestination(R.id.navigation_search) && !nextSearchQuery.isNullOrBlank()) {
                 bundle?.apply {
                     this.putString(SearchFragment.SEARCH_QUERY, nextSearchQuery)
@@ -2077,54 +2081,47 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
 
     /**
      * Applies the selected bottom navigation bar style.
-     * Purely visual (iOS style floating bar with rounded corners) — the data system
-     * and navigation behavior are not touched at all.
+     * Purely visual (glass floating pill + scroll animation) — the data system
+     * and navigation behaviour are not touched at all.
      */
     fun applyNavStyle() {
-        val binding = this.binding ?: return
-        val navView = binding.navView ?: return
+        val navView = binding?.navView ?: return
+        if (glassNavBar == null) {
+            glassNavBar = GlassNavBar(this, navView)
+        }
         val mode = PreferenceManager.getDefaultSharedPreferences(this)
             .getInt(getString(R.string.nav_style_key), NAV_STYLE_ADAPTIVE)
+        glassNavBar?.applyStyle(mode)
+        binding?.navHostFragment?.post { attachGlassScrollListeners() }
+    }
 
-        val density = resources.displayMetrics.density
-        val barColor = getResourceColor(R.attr.primaryGrayBackground)
-        val lp = navView.layoutParams as? ViewGroup.MarginLayoutParams ?: return
+    /**
+     * Attaches the glass nav-bar collapse/expand listener to every vertical
+     * RecyclerView inside the navigation host. Idempotent.
+     */
+    private fun attachGlassScrollListeners() {
+        val root = binding?.navHostFragment ?: return
+        attachGlassRecursive(root)
+    }
 
-        when (mode) {
-            NAV_STYLE_CLASSIC -> {
-                // Original full-width, square-cornered bar.
-                lp.setMargins(0, 0, 0, 0)
-                navView.background = ColorDrawable(barColor)
-                navView.elevation = 8f * density
-                navView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_UNLABELED
-            }
-
-            else -> {
-                // Floating iOS style dock.
-                val side = (20f * density).toInt()
-                val bottom = (16f * density).toInt()
-                lp.setMargins(side, 0, side, bottom)
-
-                navView.background = MaterialShapeDrawable(
-                    ShapeAppearanceModel.builder()
-                        .setAllCornerSizes(30f * density)
-                        .build()
-                ).apply {
-                    fillColor = ColorStateList.valueOf(barColor)
-                }
-                navView.elevation = 12f * density
-
-                navView.labelVisibilityMode = when (mode) {
-                    NAV_STYLE_EXPANDED -> NavigationBarView.LABEL_VISIBILITY_LABELED
-                    NAV_STYLE_COMPACT -> NavigationBarView.LABEL_VISIBILITY_UNLABELED
-                    else -> NavigationBarView.LABEL_VISIBILITY_SELECTED // Adaptive
-                }
+    private fun attachGlassRecursive(view: View?) {
+        if (view == null) return
+        if (view is RecyclerView && navScrollAttached[view] != true) {
+            val lm = view.layoutManager
+            if (lm is LinearLayoutManager && lm.orientation == RecyclerView.VERTICAL) {
+                navScrollAttached[view] = true
+                view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                        glassNavBar?.onScroll(dy, rv.canScrollVertically(-1))
+                    }
+                })
             }
         }
-
-        // Note: Material 3's default active indicator is already pill shaped,
-        // so no extra shape appearance is needed here.
-        navView.requestLayout()
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                attachGlassRecursive(view.getChildAt(i))
+            }
+        }
     }
 
     suspend fun checkGithubConnectivity(): Boolean {
