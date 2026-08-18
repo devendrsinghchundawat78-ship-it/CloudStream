@@ -137,7 +137,7 @@ class GlassNavBar(
         }
 
         navView.itemIconSize = (26f * density).roundToInt()
-        navView.itemIconTint = makeSelector(accentColor, inactiveTint)
+        navView.itemIconTintList = makeSelector(accentColor, inactiveTint)
         navView.itemTextColor = makeSelector(accentColor, labelColor)
         navView.itemActiveIndicatorColor = ColorStateList.valueOf(accentIndicator)
         navView.itemRippleColor = ColorStateList.valueOf(accentRipple)
@@ -166,7 +166,7 @@ class GlassNavBar(
             activity.getResourceColor(R.attr.colorPrimary),
             activity.getResourceColor(R.attr.textColor)
         )
-        navView.itemIconTint = defaultTint
+        navView.itemIconTintList = defaultTint
         navView.itemTextColor = defaultTint
         navView.itemActiveIndicatorColor = ColorStateList.valueOf(accentRipple)
         navView.itemRippleColor = ColorStateList.valueOf(accentRipple)

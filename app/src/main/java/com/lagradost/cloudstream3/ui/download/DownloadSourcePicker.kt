@@ -29,6 +29,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
@@ -111,15 +112,15 @@ class DownloadSourcePicker(
             rows.add(SourceRow(link))
         }
         activity.runOnUiThread {
-            dialog?.findViewById<View>(R.id.loading_holder)?.isVisible = false
-            dialog?.findViewById<RecyclerView>(R.id.source_list)?.isVisible = true
+            dialog?.findViewById<View>(R.id.loading_holder)?.let { it.isVisible = false }
+            dialog?.findViewById<RecyclerView>(R.id.source_list)?.let { it.isVisible = true }
             adapter?.notifyDataSetChanged()
         }
     }
 
     private fun onLinksLoaded() {
         val d = dialog ?: return
-        d.findViewById<View>(R.id.loading_holder).isVisible = false
+        d.findViewById<View>(R.id.loading_holder)?.let { it.isVisible = false }
 
         if (synchronized(rows) { rows.isEmpty() }) {
             showToast(R.string.no_links_found_toast, Toast.LENGTH_SHORT)
@@ -127,7 +128,7 @@ class DownloadSourcePicker(
             return
         }
 
-        d.findViewById<RecyclerView>(R.id.source_list).isVisible = true
+        d.findViewById<RecyclerView>(R.id.source_list)?.let { it.isVisible = true }
         adapter?.notifyDataSetChanged()
     }
 
@@ -139,17 +140,19 @@ class DownloadSourcePicker(
         if (videoLinks.isEmpty()) return
 
         val sem = Semaphore(4)
-        videoLinks.map { row ->
-            async {
-                sem.withPermit {
-                    val size = runCatching { row.link.getVideoSize(timeoutSeconds = 3L) }.getOrNull()
-                    if (size != null) {
-                        row.size = size
-                        activity.runOnUiThread { adapter?.notifyDataSetChanged() }
+        coroutineScope {
+            videoLinks.map { row ->
+                async {
+                    sem.withPermit {
+                        val size = runCatching { row.link.getVideoSize(timeoutSeconds = 3L) }.getOrNull()
+                        if (size != null) {
+                            row.size = size
+                            activity.runOnUiThread { adapter?.notifyDataSetChanged() }
+                        }
                     }
                 }
-            }
-        }.awaitAll()
+            }.awaitAll()
+        }
     }
 
     private inner class SourceAdapter : RecyclerView.Adapter<SourceAdapter.VH>() {
